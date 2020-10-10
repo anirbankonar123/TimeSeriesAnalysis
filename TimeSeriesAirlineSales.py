@@ -3,8 +3,9 @@ import numpy
 import matplotlib.pyplot as plt
 from pandas import read_csv
 import math
-from keras.models import Sequential
-from keras.layers import Dense
+import tensorflow as tf
+#from keras.models import Sequential
+#from keras.layers import Dense
 
 # convert an array of values into a dataset matrix
 def create_dataset(dataset, look_back=1):
@@ -22,6 +23,7 @@ dataframe = read_csv('/home/anirban/international-airline-passengers.csv', useco
 dataframe.head()
 dataset = dataframe.values
 dataset = dataset.astype('float32')
+print(len(dataset))
 print(dataset[0:5])
 # split into train and test sets
 train_size = int(len(dataset) * 0.67)
@@ -34,9 +36,9 @@ print(trainX[0:5])
 print(trainY[0:5])
 testX, testY = create_dataset(test, look_back)
 # create and fit Multilayer Perceptron model
-model = Sequential()
-model.add(Dense(8, input_dim=look_back, activation='relu'))
-model.add(Dense(1))
+model = tf.keras.Sequential()
+model.add(tf.keras.layers.Dense(8, input_dim=look_back, activation='relu'))
+model.add(tf.keras.layers.Dense(1))
 model.compile(loss='mean_squared_error', optimizer='adam')
 model.fit(trainX, trainY, epochs=200, batch_size=2, verbose=2)
 # Estimate model performance
